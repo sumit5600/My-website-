@@ -56,6 +56,64 @@
       document.getElementById("extraFields").style.display = isLogin ? "none" : "block";
       document.querySelector(".toggle").innerText = isLogin
         ? "Don't have an account? Register here"
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login & Register</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f4f4f4;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      display: inline-block;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #aaa;
+    }
+    input, button {
+      width: 250px;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .toggle {
+      margin-top: 10px;
+      color: blue;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2 id="formTitle">Create Account</h2>
+    <form id="authForm">
+      <input type="text" id="mobile" placeholder="Mobile Number" required><br>
+      <input type="password" id="password" placeholder="Password" required><br>
+      <div id="extraFields">
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required><br>
+        <input type="text" id="referral" placeholder="Referral Code (Optional)"><br>
+      </div>
+      <button type="submit" id="submitBtn">Register</button>
+    </form>
+    <div class="toggle" onclick="toggleForm()">Already have an account? Login here</div>
+  </div>
+
+  <script>
+    let isLogin = false;
+
+    function toggleForm() {
+      isLogin = !isLogin;
+      document.getElementById("formTitle").innerText = isLogin ? "Login" : "Create Account";
+      document.getElementById("submitBtn").innerText = isLogin ? "Login" : "Register";
+      document.getElementById("extraFields").style.display = isLogin ? "none" : "block";
+      document.querySelector(".toggle").innerText = isLogin
+        ? "Don't have an account? Register here"
         : "Already have an account? Login here";
     }
 
@@ -93,162 +151,5 @@
     });
   </script>
 
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>सिंपल वेबसाइट</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #f0f0f0;
-    }
-    h1 {
-      color: #333;
-    }
-    form {
-      background: #fff;
-      padding: 15px;
-      margin: 15px 0;
-      border-radius: 5px;
-      box-shadow: 0 0 5px #aaa;
-    }
-    input[type=text], input[type=password] {
-      width: 90%;
-      padding: 8px;
-      margin: 8px 0;
-      border: 1px solid #aaa;
-      border-radius: 4px;
-    }
-    button {
-      padding: 10px 15px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    p.message {
-      color: red;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
-
-  <h1>मेरी पहली वेबसाइट</h1>
-
-  <form id="registerForm">
-    <h2>रजिस्ट्रेशन</h2>
-    <input type="text" id="regUser" placeholder="यूजरनेम" required /><br />
-    <input type="password" id="regPass" placeholder="पासवर्ड" required /><br />
-    <button type="submit">रजिस्टर करें</button>
-    <p id="regMessage" class="message"></p>
-  </form>
-
-  <form id="loginForm">
-    <h2>लॉगिन</h2>
-    <input type="text" id="loginUser" placeholder="यूजरनेम" required /><br />
-    <input type="password" id="loginPass" placeholder="पासवर्ड" required /><br />
-    <button type="submit">लॉगिन करें</button>
-    <p id="loginMessage" class="message"></p>
-  </form>
-
-  <script>
-    let users = [];
-
-    document.getElementById('registerForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      let username = document.getElementById('regUser').value.trim();
-      let password = document.getElementById('regPass').value.trim();
-      if (users.find(u => u.username === username)) {
-        document.getElementById('regMessage').textContent = 'यह यूजरनेम पहले से मौजूद है!';
-      } else {
-        users.push({username: username, password: password});
-        document.getElementById('regMessage').textContent = 'रजिस्ट्रेशन सफल हुआ!';
-        this.reset();
-      }
-    });
-
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      let username = document.getElementById('loginUser').value.trim();
-      let password = document.getElementById('loginPass').value.trim();
-      let user = users.find(u => u.username === username && u.password === password);
-      if (user) {
-        document.getElementById('loginMessage').textContent = 'लॉगिन सफल हुआ!';
-      } else {
-        document.getElementById('loginMessage').textContent = 'गलत यूजरनेम या पासवर्ड!';
-      }
-    });
-  </script>
-<!-- Aviator Game Section Start -->
-<div id="aviator-game" style="text-align:center; margin-top: 50px;">
-  <h2>Aviator Demo Game</h2>
-  <div id="multiplier" style="font-size:48px; color:#00ff00; margin: 20px 0;">1.00x</div>
-  <button id="cashout-btn" style="padding:15px 30px; font-size:20px; background:red; color:white; border:none; border-radius:10px; cursor:pointer;">
-    CASH OUT
-  </button>
-  <div style="margin-top:20px; font-size:24px;">
-    Balance: <span id="balance">100</span> Coins
-  </div>
-</div>
-
-<script>
-  let multiplier = 1.00;
-  let crashed = false;
-  let balance = 100;
-  let interval;
-
-  function startGame() {
-    multiplier = 1.00;
-    crashed = false;
-    document.getElementById('multiplier').style.color = '#00ff00';
-
-    interval = setInterval(() => {
-      multiplier += 0.01 + Math.random() * 0.1;
-      multiplier = parseFloat(multiplier.toFixed(2));
-      document.getElementById('multiplier').innerText = multiplier + 'x';
-
-      if (Math.random() < 0.01 * multiplier) {
-        crashGame();
-      }
-    }, 100);
-  }
-
-  function crashGame() {
-    clearInterval(interval);
-    crashed = true;
-    document.getElementById('multiplier').style.color = 'red';
-    alert('Plane crashed at ' + multiplier + 'x. You lost!');
-    setTimeout(startGame, 2000);
-  }
-
-  function cashOut() {
-    if (!crashed) {
-      clearInterval(interval);
-      let win = Math.floor(multiplier * 2);
-      balance += win;
-      document.getElementById('balance').innerText = balance;
-      alert('Cashed out at ' + multiplier + 'x. You won ' + win + ' coins!');
-      setTimeout(startGame, 2000);
-    }
-  }
-
-  document.getElementById('cashout-btn').addEventListener('click', cashOut);
-
-  startGame();
-</script>
-<!-- Aviator Game Section End -->
-
-  
 </body>
 </html>
