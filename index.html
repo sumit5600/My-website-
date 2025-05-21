@@ -1,3 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login & Register</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f4f4f4;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      display: inline-block;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #aaa;
+    }
+    input, button {
+      width: 250px;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .toggle {
+      margin-top: 10px;
+      color: blue;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2 id="formTitle">Create Account</h2>
+    <form id="authForm">
+      <input type="text" id="mobile" placeholder="Mobile Number" required><br>
+      <input type="password" id="password" placeholder="Password" required><br>
+      <div id="extraFields">
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required><br>
+        <input type="text" id="referral" placeholder="Referral Code (Optional)"><br>
+      </div>
+      <button type="submit" id="submitBtn">Register</button>
+    </form>
+    <div class="toggle" onclick="toggleForm()">Already have an account? Login here</div>
+  </div>
+
+  <script>
+    let isLogin = false;
+
+    function toggleForm() {
+      isLogin = !isLogin;
+      document.getElementById("formTitle").innerText = isLogin ? "Login" : "Create Account";
+      document.getElementById("submitBtn").innerText = isLogin ? "Login" : "Register";
+      document.getElementById("extraFields").style.display = isLogin ? "none" : "block";
+      document.querySelector(".toggle").innerText = isLogin
+        ? "Don't have an account? Register here"
+        : "Already have an account? Login here";
+    }
+
+    document.getElementById("authForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const mobile = document.getElementById("mobile").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+
+      if (isLogin) {
+        const user = users.find(u => u.mobile === mobile && u.password === password);
+        if (user) {
+          alert("Login Successful!");
+        } else {
+          alert("Invalid credentials");
+        }
+      } else {
+        const confirmPassword = document.getElementById("confirmPassword").value.trim();
+        if (password !== confirmPassword) {
+          alert("Passwords do not match");
+          return;
+        }
+
+        if (users.find(u => u.mobile === mobile)) {
+          alert("Mobile already registered");
+          return;
+        }
+
+        users.push({ mobile, password });
+        localStorage.setItem("users", JSON.stringify(users));
+        alert("Account Created Successfully!");
+        document.getElementById("authForm").reset();
+      }
+    });
+  </script>
+
+</body>
+</html>
 
 <!DOCTYPE html>
 <html lang="hi">
