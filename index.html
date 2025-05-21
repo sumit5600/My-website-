@@ -93,6 +93,64 @@
       }
     });
   </script>
+<!-- Aviator Game Section Start -->
+<div id="aviator-game" style="text-align:center; margin-top: 50px;">
+  <h2>Aviator Demo Game</h2>
+  <div id="multiplier" style="font-size:48px; color:#00ff00; margin: 20px 0;">1.00x</div>
+  <button id="cashout-btn" style="padding:15px 30px; font-size:20px; background:red; color:white; border:none; border-radius:10px; cursor:pointer;">
+    CASH OUT
+  </button>
+  <div style="margin-top:20px; font-size:24px;">
+    Balance: <span id="balance">100</span> Coins
+  </div>
+</div>
 
+<script>
+  let multiplier = 1.00;
+  let crashed = false;
+  let balance = 100;
+  let interval;
+
+  function startGame() {
+    multiplier = 1.00;
+    crashed = false;
+    document.getElementById('multiplier').style.color = '#00ff00';
+
+    interval = setInterval(() => {
+      multiplier += 0.01 + Math.random() * 0.1;
+      multiplier = parseFloat(multiplier.toFixed(2));
+      document.getElementById('multiplier').innerText = multiplier + 'x';
+
+      if (Math.random() < 0.01 * multiplier) {
+        crashGame();
+      }
+    }, 100);
+  }
+
+  function crashGame() {
+    clearInterval(interval);
+    crashed = true;
+    document.getElementById('multiplier').style.color = 'red';
+    alert('Plane crashed at ' + multiplier + 'x. You lost!');
+    setTimeout(startGame, 2000);
+  }
+
+  function cashOut() {
+    if (!crashed) {
+      clearInterval(interval);
+      let win = Math.floor(multiplier * 2);
+      balance += win;
+      document.getElementById('balance').innerText = balance;
+      alert('Cashed out at ' + multiplier + 'x. You won ' + win + ' coins!');
+      setTimeout(startGame, 2000);
+    }
+  }
+
+  document.getElementById('cashout-btn').addEventListener('click', cashOut);
+
+  startGame();
+</script>
+<!-- Aviator Game Section End -->
+  
 </body>
 </html>
